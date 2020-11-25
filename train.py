@@ -309,15 +309,15 @@ def train(hyp, opt, device, tb_writer=None):
             if ema:
                 ema.update_attr(model, include=['yaml', 'nc', 'hyp', 'gr', 'names', 'stride'])
             final_epoch = epoch + 1 == epochs
-            # if not opt.notest or final_epoch:  # Calculate mAP
-            #     results, maps, times = test.test(opt.data,
-            #                                      batch_size=total_batch_size,
-            #                                      imgsz=imgsz_test,
-            #                                      model=ema.ema,
-            #                                      single_cls=opt.single_cls,
-            #                                      dataloader=testloader,
-            #                                      save_dir=log_dir,
-            #                                      plots=epoch == 0 or final_epoch)  # plot first and last
+            if not opt.notest or final_epoch:  # Calculate mAP
+                results, maps, times = test.test(opt.data,
+                                                 batch_size=total_batch_size,
+                                                 imgsz=imgsz_test,
+                                                 model=ema.ema,
+                                                 single_cls=opt.single_cls,
+                                                 dataloader=testloader,
+                                                 save_dir=log_dir,
+                                                 plots=epoch == 0 or final_epoch)  # plot first and last
 
             # Write
             with open(results_file, 'a') as f:
